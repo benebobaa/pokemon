@@ -14,7 +14,7 @@ type UserHandlerImpl struct {
 type UserHandler interface {
 	FindAll()
 	Register(user domain.User)
-	Access(username string) bool
+	Access(user *domain.User) bool
 }
 
 func NewUserHandler(userUsecase usecase.UserUsecase) UserHandler {
@@ -39,16 +39,18 @@ func (h UserHandlerImpl) Register(user domain.User) {
 	}
 }
 
-func (h UserHandlerImpl) Access(username string) bool {
+func (h UserHandlerImpl) Access(user *domain.User) bool {
 
-	_, err := h.UserUsecase.FindByUsername(username)
+	userExists, err := h.UserUsecase.FindByUsername(user.Username)
 
 	if err != nil {
 		fmt.Println("Access error: ", err.Error())
 		return false
 	}
 
-	fmt.Println("Success access: ", username)
+	*user = *userExists
+
+	fmt.Println("Success access: ", user.Username)
 
 	return true
 }

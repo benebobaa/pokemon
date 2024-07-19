@@ -24,11 +24,9 @@ func NewUserRepository() UserRepository {
 
 func (r *UserRepositoryImpl) Create(value domain.User) {
 	r.lastID++
-
 	value.ID = r.lastID
 
 	r.Users = append(r.Users, value)
-
 }
 
 func (r UserRepositoryImpl) FindByUsername(username string) (*domain.User, error) {
@@ -44,4 +42,15 @@ func (r UserRepositoryImpl) FindByUsername(username string) (*domain.User, error
 
 func (r UserRepositoryImpl) FindAll() []domain.User {
 	return r.Users
+}
+
+func (r *UserRepositoryImpl) FindById(id int) (*domain.User, error) {
+
+	for _, v := range r.Users {
+		if v.ID == id {
+			return &v, nil
+		}
+	}
+
+	return nil, util.ErrUserNotFound
 }

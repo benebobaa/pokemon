@@ -2,6 +2,7 @@ package repository
 
 import (
 	"pokemon_solid/internal/domain"
+	"pokemon_solid/internal/util"
 )
 
 type PokemonRepositoryImpl struct {
@@ -34,4 +35,16 @@ func (p *PokemonRepositoryImpl) FindAll() []domain.Pokemon {
 	}
 
 	return pokemons
+}
+
+// FindById implements PokemonRepository.
+func (p *PokemonRepositoryImpl) FindById(id int) (*domain.Pokemon, error) {
+
+	pokemon, ok := p.Pokemons[id]
+
+	if !ok {
+		return nil, util.ErrPokemonNotFound
+	}
+
+	return &pokemon, nil
 }

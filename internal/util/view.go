@@ -28,6 +28,17 @@ func TablePokemon(data []domain.Pokemon) {
 	fmt.Print("\n\n")
 }
 
+func TableCollection(data []domain.Collections) {
+	fmt.Print("\n\n")
+	fmt.Printf("%-5s %-20s %-20s %-10s %-10s %-20s\n", "ID", "User Name", "Pokemon Name", "Type", "Is Rare", "Created At")
+	fmt.Println(strings.Repeat("-", 85))
+
+	for _, c := range data {
+		fmt.Printf("%-5d %-20s %-20s %-10s %-10t %-20s\n", c.ID, c.User.Username, c.Pokemon.Name, c.Pokemon.Type, c.Pokemon.IsRare, c.CreatedAt)
+	}
+	fmt.Print("\n\n")
+}
+
 func Menu() {
 	fmt.Println("[1] View All Users (admin only)")
 	fmt.Println("[2] View All Pokemons Available")
