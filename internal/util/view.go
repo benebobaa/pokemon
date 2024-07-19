@@ -9,7 +9,7 @@ import (
 func TableUser(data []domain.User) {
 
 	fmt.Printf("%-5s %-20s %-20s\n", "ID", "Username", "Name")
-	fmt.Println(strings.Repeat("-", 55))
+	fmt.Println(strings.Repeat("-", 36))
 
 	for _, user := range data {
 		fmt.Printf("%-5d %-20s %-20s\n", user.ID, user.Username, user.Name)
@@ -18,20 +18,21 @@ func TableUser(data []domain.User) {
 }
 
 func TablePokemon(data []domain.Pokemon) {
+	fmt.Print("\n\n")
+	fmt.Printf("%-5s %-20s %-10s %-10s %-10s %-20s\n", "ID", "Name", "Type", "CatchRate", "IsRare", "Registered Date")
+	fmt.Println(strings.Repeat("-", 75))
 
-	fmt.Printf("%-5s %-20s %-10s %-20s\n", "ID", "Name", "Presence", "Created At")
-	fmt.Println(strings.Repeat("-", 55))
-
-	// for _, emp := range data {
-	// 	fmt.Printf("%-5d %-20s %-10t %-20s\n", emp.ID, emp.Name, emp.Presence, emp.CreatedAt)
-	// }
+	for _, p := range data {
+		fmt.Printf("%-5d %-20s %-10s %-10d %-10t %-20s\n", p.ID, p.Name, p.Type, p.CatchRate, p.IsRare, p.RegisteredDate)
+	}
 	fmt.Print("\n\n")
 }
 
 func Menu() {
 	fmt.Println("[1] View All Users (admin only)")
 	fmt.Println("[2] View All Pokemons Available")
-	fmt.Println("[3] Delete employee by id")
-	fmt.Println("[4] Update employee by id")
-	fmt.Println("[5] Exit the program")
+	fmt.Println("[3] Try Catch a Pokemon")
+	fmt.Println("[4] Check your pokemon collections")
+	fmt.Println("[5] Release your collection pokemon")
+	fmt.Println("[6] Exit the program")
 }

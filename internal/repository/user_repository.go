@@ -2,7 +2,6 @@ package repository
 
 import (
 	"pokemon_solid/internal/domain"
-	intf "pokemon_solid/internal/interface"
 	"pokemon_solid/internal/util"
 )
 
@@ -12,9 +11,9 @@ type UserRepositoryImpl struct {
 }
 
 type UserRepository interface {
-	intf.Crud
+	Repository[domain.User]
 	FindByUsername(username string) (*domain.User, error)
-	FindAll() []domain.User
+	// FindAll() []domain.User
 }
 
 func NewUserRepository() UserRepository {
@@ -23,15 +22,13 @@ func NewUserRepository() UserRepository {
 	}
 }
 
-func (r *UserRepositoryImpl) Create(value any) error {
+func (r *UserRepositoryImpl) Create(value domain.User) {
 	r.lastID++
 
-	user := value.(domain.User)
-	user.ID = r.lastID
+	value.ID = r.lastID
 
-	r.Users = append(r.Users, user)
+	r.Users = append(r.Users, value)
 
-	return nil
 }
 
 func (r UserRepositoryImpl) FindByUsername(username string) (*domain.User, error) {
