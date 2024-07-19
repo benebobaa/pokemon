@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"pokemon_solid/internal/domain"
 	"pokemon_solid/internal/usecase"
+	"pokemon_solid/internal/util"
 )
 
 type UserHandlerImpl struct {
@@ -11,6 +12,7 @@ type UserHandlerImpl struct {
 }
 
 type UserHandler interface {
+	FindAll()
 	Register(user domain.User)
 	Access(username string) bool
 }
@@ -19,6 +21,13 @@ func NewUserHandler(userUsecase usecase.UserUsecase) UserHandler {
 	return UserHandlerImpl{
 		UserUsecase: userUsecase,
 	}
+}
+
+func (h UserHandlerImpl) FindAll() {
+
+	users := h.UserUsecase.FindAll()
+
+	util.TableUser(users)
 }
 
 func (h UserHandlerImpl) Register(user domain.User) {

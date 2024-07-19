@@ -23,9 +23,9 @@ func NewUserUsecase(userRepository repository.UserRepository) UserUsecase {
 
 func (u UserUsecaseImpl) CreateNew(user domain.User) error {
 
-	_, err := u.UserRepository.FindByUsername(user.Username)
+	userExists, err := u.UserRepository.FindByUsername(user.Username)
 
-	if err != nil {
+	if userExists != nil {
 		return err
 	}
 
