@@ -7,4 +7,5 @@ package repository
 type Repository[T any] interface {
 	Create(value T)
 	FindAll() []T
+	FindById(id int) (*T, error)
 }

@@ -7,7 +7,7 @@ import (
 	"pokemon_solid/internal/usecase"
 )
 
-func initHandler() (handler.UserHandler, handler.PokemonHandler) {
+func initHandler() (handler.UserHandler, handler.PokemonHandler, handler.CollectionsHandler) {
 	log.Println("init user")
 	ur := repository.NewUserRepository()
 	uc := usecase.NewUserUsecase(ur)
@@ -20,5 +20,10 @@ func initHandler() (handler.UserHandler, handler.PokemonHandler) {
 	ph := handler.NewPokemonHandler(pc)
 	generatePokemons(ph)
 
-	return uh, ph
+	log.Println("init collections")
+	cr := repository.NewCollectionsRepository()
+	cc := usecase.NewCollectionsUsecase(cr, ur, pr)
+	hc := handler.NewCollectionsHandler(cc)
+
+	return uh, ph, hc
 }
