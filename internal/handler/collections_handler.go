@@ -13,7 +13,7 @@ type CollectionsHandlerImpl struct {
 
 type CollectionsHandler interface {
 	Catch(request request.CatchRequest)
-	Release(id int)
+	Release(request request.ReleaseRequest)
 	FindAll()
 }
 
@@ -39,6 +39,13 @@ func (c CollectionsHandlerImpl) FindAll() {
 	util.TableCollection(collections)
 }
 
-func (c CollectionsHandlerImpl) Release(id int) {
-	panic("unimplemented")
+func (c CollectionsHandlerImpl) Release(request request.ReleaseRequest) {
+	err := c.CollectionsUsecase.ReleaseCollection(request)
+
+	if err != nil {
+		fmt.Println("Release error: ", err.Error())
+		return
+	}
+
+	fmt.Println("Success release collection id: ", request.CollectionID)
 }
