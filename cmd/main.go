@@ -66,6 +66,21 @@ func main() {
 				collectionsHandler.Catch(catchRequest)
 			case "4":
 				collectionsHandler.FindAll()
+			case "5":
+				fmt.Print("Input collection id: ")
+				collectionId, err := util.InputCliNumber(scanner)
+
+				if err != nil {
+					fmt.Println("Collection id must a number!")
+				}
+
+				releaseRequest := request.ReleaseRequest{
+					UserID:       user.ID,
+					CollectionID: *collectionId,
+				}
+
+				collectionsHandler.Release(releaseRequest)
+
 			case "6":
 				fmt.Println("Thankyou!", user.Username)
 				return

@@ -15,9 +15,11 @@ type CollectionsUsecaseImpl struct {
 	UserRepository        repository.UserRepository
 	PokemonRepository     repository.PokemonRepository
 }
+
 type CollectionsUsecase interface {
 	TryCatch(request request.CatchRequest) (string, error)
 	FindAll() []domain.Collections
+	ReleaseCollection(request request.ReleaseRequest) error
 }
 
 func NewCollectionsUsecase(
@@ -65,6 +67,28 @@ func (c CollectionsUsecaseImpl) TryCatch(request request.CatchRequest) (string, 
 // FindAll implements CollectionsUsecase.
 func (c CollectionsUsecaseImpl) FindAll() []domain.Collections {
 	return c.CollectionsRepository.FindAll()
+}
+
+// Release implements CollectionsUsecase.
+func (c CollectionsUsecaseImpl) ReleaseCollection(request request.ReleaseRequest) error {
+
+	collection, err := c.CollectionsRepository.FindById(request.CollectionID)
+
+	if err != nil {
+		return err
+	}
+
+	if collection.User.ID != request.UserID {
+		return util.ErrForbiddenReleasePokemon
+	}
+
+	err = c.CollectionsRepository.Delete(collection.ID)
+
+	if err != nil {
+		return err
+	}
+
+	return nil
 }
 
 // CatchProbability Random

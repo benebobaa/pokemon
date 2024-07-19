@@ -2,6 +2,7 @@ package repository
 
 import (
 	"pokemon_solid/internal/domain"
+	"pokemon_solid/internal/util"
 	"time"
 )
 
@@ -12,6 +13,7 @@ type CollectionsRepositoryImpl struct {
 
 type CollectionsRepository interface {
 	Repository[domain.Collections]
+	Delete(id int) error
 }
 
 func NewCollectionsRepository() CollectionsRepository {
@@ -34,5 +36,25 @@ func (c *CollectionsRepositoryImpl) FindAll() []domain.Collections {
 
 // FindById implements CollectionsRepository.
 func (c *CollectionsRepositoryImpl) FindById(id int) (*domain.Collections, error) {
-	panic("unimplemented")
+
+	for _, v := range c.Collections {
+		if v.ID == id {
+			return &v, nil
+		}
+	}
+
+	return nil, util.ErrCollectionNotFound
+}
+
+// Delete implements CollectionsRepository.
+func (c *CollectionsRepositoryImpl) Delete(id int) error {
+
+	for i, v := range c.Collections {
+		if id == v.ID {
+			c.Collections = append(c.Collections[:i], c.Collections[i+1:]...)
+			return nil
+		}
+	}
+
+	return util.ErrCollectionNotFound
 }
