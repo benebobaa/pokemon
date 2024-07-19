@@ -8,6 +8,7 @@ import (
 	"pokemon_solid/internal/domain"
 	"pokemon_solid/internal/domain/request"
 	"pokemon_solid/internal/util"
+	"time"
 )
 
 const passwordAdmin = "12345"
@@ -20,76 +21,100 @@ func main() {
 	log.Println("success init")
 
 	scanner := bufio.NewScanner(os.Stdin)
+	util.InitMenu()
 
-	fmt.Print("\n\nYour username: ")
-	user.Username = util.InputCli(scanner)
-	ok := userHandler.Access(&user)
+	for {
+		fmt.Print("Input: ")
+		input := util.InputCli(scanner)
 
-	fmt.Println("Welcome! ", user.Name)
-	if ok {
+		switch input {
+		case "1":
+			fmt.Print("\n\nYour username: ")
+			user.Username = util.InputCli(scanner)
+			ok := userHandler.Access(&user)
 
-		fmt.Print("\n\n")
-		util.Menu()
-		for {
-			fmt.Print(user.Username, " > ")
-			input := util.InputCli(scanner)
+			if ok {
 
-			switch input {
-			case "1":
-				fmt.Print("Password: ")
-				scanner.Scan()
-				password := scanner.Text()
+				fmt.Println("Welcome! ", user.Name)
 
-				if password != passwordAdmin {
-					fmt.Println("\nInvalid password admin")
-					continue
-				}
-
-				userHandler.FindAll()
-
-			case "2":
-				pokemonHandler.FindAll()
-			case "3":
-				fmt.Println("Letsgo! catch a pokemon")
-
-				fmt.Print("Input pokemon id: ")
-				pokemonId, err := util.InputCliNumber(scanner)
-
-				if err != nil {
-					fmt.Println("Pokemon id must a number!")
-				}
-
-				catchRequest := request.CatchRequest{
-					UserID:    user.ID,
-					PokemonID: *pokemonId,
-				}
-				collectionsHandler.Catch(catchRequest)
-			case "4":
-				collectionsHandler.FindAll()
-			case "5":
-				fmt.Print("Input collection id: ")
-				collectionId, err := util.InputCliNumber(scanner)
-
-				if err != nil {
-					fmt.Println("Collection id must a number!")
-				}
-
-				releaseRequest := request.ReleaseRequest{
-					UserID:       user.ID,
-					CollectionID: *collectionId,
-				}
-
-				collectionsHandler.Release(releaseRequest)
-
-			case "6":
-				fmt.Println("Thankyou!", user.Username)
-				return
-			default:
-				fmt.Print("\nWrong input menu!\n")
+				fmt.Print("\n\n")
 				util.Menu()
+
+				for {
+					fmt.Print(user.Username, " > ")
+					input := util.InputCli(scanner)
+
+					if input == "6" {
+						fmt.Println("Thankyou!", user.Username)
+						break
+					}
+
+					switch input {
+					case "1":
+						fmt.Print("Password: ")
+						scanner.Scan()
+						password := scanner.Text()
+
+						if password != passwordAdmin {
+							fmt.Println("\nInvalid password admin")
+							continue
+						}
+
+						userHandler.FindAll()
+
+					case "2":
+						pokemonHandler.FindAll()
+					case "3":
+						fmt.Println("Letsgo! catch a pokemon")
+
+						fmt.Print("Input pokemon id: ")
+						pokemonId, err := util.InputCliNumber(scanner)
+
+						if err != nil {
+							fmt.Println("Pokemon id must a number!")
+						}
+
+						catchRequest := request.CatchRequest{
+							UserID:    user.ID,
+							PokemonID: *pokemonId,
+						}
+						collectionsHandler.Catch(catchRequest)
+					case "4":
+						collectionsHandler.FindAll()
+					case "5":
+						fmt.Print("Input collection id: ")
+						collectionId, err := util.InputCliNumber(scanner)
+
+						if err != nil {
+							fmt.Println("Collection id must a number!")
+						}
+
+						releaseRequest := request.ReleaseRequest{
+							UserID:       user.ID,
+							CollectionID: *collectionId,
+						}
+
+						collectionsHandler.Release(releaseRequest)
+
+					default:
+						fmt.Print("\nWrong input menu!\n")
+						util.Menu()
+					}
+				}
+			} else {
+				fmt.Println("Please try again")
 			}
+		case "2":
+			fmt.Print("Exiting")
+			for i := 0; i < 5; i++ {
+				fmt.Print(" . ")
+				time.Sleep(300 * time.Millisecond)
+			}
+			fmt.Print("\n\n")
+			return
+		default:
+			fmt.Println("Your input wrong! ")
+			util.InitMenu()
 		}
-	} else {
-		fmt.Println("Please try again")
 	}
 }
