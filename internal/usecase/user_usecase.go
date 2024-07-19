@@ -3,6 +3,7 @@ package usecase
 import (
 	"pokemon_solid/internal/domain"
 	"pokemon_solid/internal/repository"
+	"pokemon_solid/internal/util"
 )
 
 type UserUsecaseImpl struct {
@@ -23,17 +24,13 @@ func NewUserUsecase(userRepository repository.UserRepository) UserUsecase {
 
 func (u UserUsecaseImpl) CreateNew(user domain.User) error {
 
-	userExists, err := u.UserRepository.FindByUsername(user.Username)
+	userExists, _ := u.UserRepository.FindByUsername(user.Username)
 
 	if userExists != nil {
-		return err
+		return util.ErrUsernameAlreadyExists
 	}
 
-	err = u.UserRepository.Create(user)
-
-	if err != nil {
-		return err
-	}
+	u.UserRepository.Create(user)
 
 	return nil
 }

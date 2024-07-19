@@ -3,10 +3,8 @@ package main
 import (
 	"bufio"
 	"fmt"
+	"log"
 	"os"
-	"pokemon_solid/internal/handler"
-	"pokemon_solid/internal/repository"
-	"pokemon_solid/internal/usecase"
 	"pokemon_solid/internal/util"
 )
 
@@ -16,16 +14,14 @@ func main() {
 	var username string
 
 	// init
-	ur := repository.NewUserRepository()
-	uc := usecase.NewUserUsecase(ur)
-	uh := handler.NewUserHandler(uc)
-	generateUsers(uh)
+	userHandler, pokemonHandler := initHandler()
+	log.Println("success init")
 
 	scanner := bufio.NewScanner(os.Stdin)
 
 	fmt.Print("\n\nYour username: ")
 	username = util.InputCli(scanner)
-	ok := uh.Access(username)
+	ok := userHandler.Access(username)
 
 	if ok {
 
@@ -46,12 +42,13 @@ func main() {
 					continue
 				}
 
-				uh.FindAll()
+				userHandler.FindAll()
 
 			case "2":
-				fmt.Println("Test")
-
-			case "5":
+				pokemonHandler.FindAll()
+			case "3":
+				fmt.Println("3")
+			case "6":
 				fmt.Println("Thankyou!", username)
 				return
 			default:

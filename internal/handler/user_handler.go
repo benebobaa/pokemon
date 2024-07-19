@@ -37,8 +37,6 @@ func (h UserHandlerImpl) Register(user domain.User) {
 	if err != nil {
 		fmt.Println("Register error: ", err.Error())
 	}
-
-	fmt.Println("Success register: ", user.Username)
 }
 
 func (h UserHandlerImpl) Access(username string) bool {
