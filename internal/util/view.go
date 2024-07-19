@@ -45,5 +45,10 @@ func Menu() {
 	fmt.Println("[3] Try Catch a Pokemon")
 	fmt.Println("[4] Check your pokemon collections")
 	fmt.Println("[5] Release your collection pokemon")
-	fmt.Println("[6] Exit the program")
+	fmt.Println("[6] Logout user")
+}
+
+func InitMenu() {
+	fmt.Println("[1] Access with username")
+	fmt.Println("[2] Exit the program")
 }
