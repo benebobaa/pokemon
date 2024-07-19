@@ -13,7 +13,6 @@ type UserRepositoryImpl struct {
 type UserRepository interface {
 	Repository[domain.User]
 	FindByUsername(username string) (*domain.User, error)
-	// FindAll() []domain.User
 }
 
 func NewUserRepository() UserRepository {
