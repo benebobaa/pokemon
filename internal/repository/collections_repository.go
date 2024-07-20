@@ -14,6 +14,7 @@ type CollectionsRepositoryImpl struct {
 type CollectionsRepository interface {
 	Repository[domain.Collections]
 	Delete(id int) error
+	FindByUserID(id int) []domain.Collections
 }
 
 func NewCollectionsRepository() CollectionsRepository {
@@ -57,4 +58,17 @@ func (c *CollectionsRepositoryImpl) Delete(id int) error {
 	}
 
 	return util.ErrCollectionNotFound
+}
+
+// FindByUserID implements CollectionsRepository.
+func (c *CollectionsRepositoryImpl) FindByUserID(id int) []domain.Collections {
+	var collections []domain.Collections
+
+	for _, v := range c.Collections {
+		if v.User.ID == id {
+			collections = append(collections, v)
+		}
+	}
+
+	return collections
 }

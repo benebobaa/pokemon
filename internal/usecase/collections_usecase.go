@@ -20,6 +20,7 @@ type CollectionsUsecase interface {
 	FindAll() []domain.Collections
 	TryCatch(request request.CatchRequest) (string, error)
 	ReleaseCollection(request request.ReleaseRequest) error
+	FindAllByUserID(id int) []domain.Collections
 	catchProbability(rate int) (string, error)
 }
 
@@ -90,6 +91,11 @@ func (c CollectionsUsecaseImpl) ReleaseCollection(request request.ReleaseRequest
 	}
 
 	return nil
+}
+
+// FindAllByUserID implements CollectionsUsecase.
+func (c CollectionsUsecaseImpl) FindAllByUserID(id int) []domain.Collections {
+	return c.CollectionsRepository.FindByUserID(id)
 }
 
 func (_ CollectionsUsecaseImpl) catchProbability(rate int) (string, error) {

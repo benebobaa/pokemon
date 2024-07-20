@@ -43,9 +43,10 @@ func Menu() {
 	fmt.Println("[1] View All Users (admin only)")
 	fmt.Println("[2] View All Pokemons Available")
 	fmt.Println("[3] Try Catch a Pokemon")
-	fmt.Println("[4] Check your pokemon collections")
-	fmt.Println("[5] Release your collection pokemon")
-	fmt.Println("[6] Logout user")
+	fmt.Println("[4] Check all pokemon collections (admin only)")
+	fmt.Println("[5] Check your pokemon collections")
+	fmt.Println("[6] Release your collection pokemon")
+	fmt.Println("[7] Logout user")
 }
 
 func InitMenu() {
