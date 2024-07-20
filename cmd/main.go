@@ -44,7 +44,7 @@ func main() {
 					fmt.Print(user.Username, " > ")
 					input := util.InputCli(scanner)
 
-					if input == "6" {
+					if input == "7" {
 						fmt.Println("Thankyou!", user.Username)
 						break
 					}
@@ -72,6 +72,7 @@ func main() {
 
 						if err != nil {
 							fmt.Println("Pokemon id must a number!")
+							continue
 						}
 
 						catchRequest := request.CatchRequest{
@@ -80,13 +81,25 @@ func main() {
 						}
 						collectionsHandler.Catch(catchRequest)
 					case "4":
+						fmt.Print("Password: ")
+						scanner.Scan()
+						password := scanner.Text()
+
+						if password != passwordAdmin {
+							fmt.Println("\nInvalid password admin")
+							continue
+						}
+
 						collectionsHandler.FindAll()
 					case "5":
+						collectionsHandler.FindAllByUserID(user.ID)
+					case "6":
 						fmt.Print("Input collection id: ")
 						collectionId, err := util.InputCliNumber(scanner)
 
 						if err != nil {
 							fmt.Println("Collection id must a number!")
+							continue
 						}
 
 						releaseRequest := request.ReleaseRequest{
@@ -94,8 +107,9 @@ func main() {
 							CollectionID: *collectionId,
 						}
 
-						collectionsHandler.Release(releaseRequest)
+						log.Println("release req :: ", releaseRequest)
 
+						collectionsHandler.Release(releaseRequest)
 					default:
 						fmt.Print("\nWrong input menu!\n")
 						util.Menu()

@@ -26,7 +26,6 @@ func InputCliNumber(scanner *bufio.Scanner) (*int, error) {
 	input = strings.TrimSpace(input)
 
 	number, err := strconv.Atoi(input)
-
 	if err != nil {
 		return nil, err
 	}

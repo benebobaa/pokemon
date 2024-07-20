@@ -12,11 +12,11 @@ import (
 type CollectionsHandlerImpl struct {
 	CollectionsUsecase usecase.CollectionsUsecase
 }
-
 type CollectionsHandler interface {
+	Handler
 	Catch(request request.CatchRequest)
 	Release(request request.ReleaseRequest)
-	Handler
+	FindAllByUserID(userId int)
 }
 
 func NewCollectionsHandler(collectionsUsecase usecase.CollectionsUsecase) CollectionsHandler {
@@ -57,4 +57,11 @@ func (c CollectionsHandlerImpl) Release(request request.ReleaseRequest) {
 	}
 
 	fmt.Println("Success release collection id: ", request.CollectionID)
+}
+
+// FindAllByUserID implements CollectionsHandler.
+func (c CollectionsHandlerImpl) FindAllByUserID(userId int) {
+	collections := c.CollectionsUsecase.FindAllByUserID(userId)
+
+	util.TableCollection(collections)
 }
