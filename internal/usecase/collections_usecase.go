@@ -17,9 +17,10 @@ type CollectionsUsecaseImpl struct {
 }
 
 type CollectionsUsecase interface {
-	TryCatch(request request.CatchRequest) (string, error)
 	FindAll() []domain.Collections
+	TryCatch(request request.CatchRequest) (string, error)
 	ReleaseCollection(request request.ReleaseRequest) error
+	catchProbability(rate int) (string, error)
 }
 
 func NewCollectionsUsecase(
@@ -53,7 +54,7 @@ func (c CollectionsUsecaseImpl) TryCatch(request request.CatchRequest) (string, 
 		Pokemon: *pokemon,
 	}
 
-	message, err := catchProbability(pokemon.CatchRate)
+	message, err := c.catchProbability(pokemon.CatchRate)
 
 	if err != nil {
 		return "", err
@@ -91,8 +92,7 @@ func (c CollectionsUsecaseImpl) ReleaseCollection(request request.ReleaseRequest
 	return nil
 }
 
-// CatchProbability Random
-func catchProbability(rate int) (string, error) {
+func (_ CollectionsUsecaseImpl) catchProbability(rate int) (string, error) {
 	// Fake Loading
 	fmt.Print("\nLoading catch")
 

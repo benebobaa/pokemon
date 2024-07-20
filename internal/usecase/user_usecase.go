@@ -11,9 +11,9 @@ type UserUsecaseImpl struct {
 }
 
 type UserUsecase interface {
+	Usecase[domain.User]
 	CreateNew(user domain.User) error
 	FindByUsername(username string) (*domain.User, error)
-	FindAll() []domain.User
 }
 
 func NewUserUsecase(userRepository repository.UserRepository) UserUsecase {

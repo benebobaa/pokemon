@@ -11,7 +11,7 @@ type PokemonHandlerImpl struct {
 }
 
 type PokemonHandler interface {
-	FindAll()
+	Handler
 	Create(pokemon domain.Pokemon)
 }
 
