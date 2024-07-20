@@ -5,6 +5,8 @@ import (
 	"pokemon_solid/internal/domain/request"
 	"pokemon_solid/internal/usecase"
 	"pokemon_solid/internal/util"
+
+	"github.com/benebobaa/valo"
 )
 
 type CollectionsHandlerImpl struct {
@@ -14,7 +16,7 @@ type CollectionsHandlerImpl struct {
 type CollectionsHandler interface {
 	Catch(request request.CatchRequest)
 	Release(request request.ReleaseRequest)
-	FindAll()
+	Handler
 }
 
 func NewCollectionsHandler(collectionsUsecase usecase.CollectionsUsecase) CollectionsHandler {
@@ -24,6 +26,13 @@ func NewCollectionsHandler(collectionsUsecase usecase.CollectionsUsecase) Collec
 }
 
 func (c CollectionsHandlerImpl) Catch(request request.CatchRequest) {
+
+	err := valo.Validate(request)
+
+	if err != nil {
+		fmt.Println("Error catch: ", err.Error())
+	}
+
 	message, err := c.CollectionsUsecase.TryCatch(request)
 	if err != nil {
 		fmt.Println("Catch error: ", err)

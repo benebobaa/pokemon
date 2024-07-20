@@ -10,8 +10,7 @@ type PokemonUsecaseImpl struct {
 }
 
 type PokemonUsecase interface {
-	CreateNew(pokemon domain.Pokemon)
-	FindAll() []domain.Pokemon
+	Usecase[domain.Pokemon]
 }
 
 func NewPokemonUsecase(pokemonRepository repository.PokemonRepository) PokemonUsecase {
@@ -20,8 +19,9 @@ func NewPokemonUsecase(pokemonRepository repository.PokemonRepository) PokemonUs
 	}
 }
 
-func (p PokemonUsecaseImpl) CreateNew(pokemon domain.Pokemon) {
+func (p PokemonUsecaseImpl) CreateNew(pokemon domain.Pokemon) error {
 	p.PokemonRepository.Create(pokemon)
+	return nil
 }
 
 func (p PokemonUsecaseImpl) FindAll() []domain.Pokemon {

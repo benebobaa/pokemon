@@ -12,7 +12,7 @@ type UserHandlerImpl struct {
 }
 
 type UserHandler interface {
-	FindAll()
+	Handler
 	Register(user domain.User)
 	Access(user *domain.User) bool
 }
